@@ -1,21 +1,20 @@
 #!/usr/bin/env groovy
-Jenkinsfile (Declarative Pipeline)
-
 pipeline {
-    agent any
+    agent none 
     stages {
-        stage('Example') {
+        stage('Example Build') {
+            agent { docker 'maven:3-alpine' } 
             steps {
-                echo 'Hello World'
-
-                script {
-                    def browsers = ['chrome', 'firefox']
-                    for (int i = 0; i < browsers.size(); ++i) {
-                        echo "Testing the ${browsers[i]} browser"
-                    }
-                }
+                echo 'Hello, Maven'
+                sh 'mvn --version'
+            }
+        }
+        stage('Example Test') {
+            agent { docker 'openjdk:8-jre' } 
+            steps {
+                echo 'Hello, JDK'
+                sh 'java -version'
             }
         }
     }
 }
-
